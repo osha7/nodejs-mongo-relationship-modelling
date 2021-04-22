@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/playground', { useNewUrlParser: true, useUnifiedTopology: true }) //connects to MongoDB with connection string
+// mongoose.connect('mongodb://localhost/playground', { useNewUrlParser: true, useUnifiedTopology: true }) //connects to MongoDB with connection string
+mongoose.connect('mongodb://localhost/mongo-musician', { useNewUrlParser: true, useUnifiedTopology: true }) //connects to MongoDB with connection string
 // this connection string will change when in production environment and will not be hardcoded, it will come from config file
 // .connect returns promise
     .then(() => console.log('Connected to MongoDB...'))
@@ -18,19 +19,19 @@ const musicianSchema = new mongoose.Schema({
 
 const Musician = mongoose.model('Musician', musicianSchema); // Musician is a Class not an object
 
-async function createCourse() {
-    // make new object:
-    const musician = new Musician({
-        name: "Phoebe Bridgers",
-        genre: "Folk-rock",
-        tags: ['Saddest Factory', 'Punisher'], //document can be a complex object in MongoDB
-        isActive: true,
-        bookingPrice: 10000
-    });
+// async function createCourse() {
+//     // make new object:
+//     const musician = new Musician({
+//         name: "Phoebe Bridgers",
+//         genre: "Folk-rock",
+//         tags: ['Saddest Factory', 'Punisher'], //document can be a complex object in MongoDB
+//         isActive: true,
+//         bookingPrice: 10000
+//     });
 
-    const result = await musician.save(); //async operation
-    console.log("Result", result);
-};
+//     const result = await musician.save(); //async operation
+//     console.log("Result", result);
+// };
 
 // createCourse();
 
@@ -117,20 +118,45 @@ async function createCourse() {
 //     console.log(musicians)
 // } 
 
-// Pagination
+// // Pagination
+// async function getMusicians() {
+//     const pageNumber = 2;
+//     const pageSize = 10;
+//     // /api/musicians?pageNumber=2&pageSize=10
+
+//     const musicians = await Musician
+//         .find({ bookingPrice: { $in: [7000, 7500, 8000] }}) 
+//         .skip((pageNumber-1) * pageSize)
+//         .limit(pageSize)
+//         .sort({ name: 1 })  
+
+//     console.log(musicians)
+// } 
+
+// exercise:
+// async function getMusicians() {
+//     const musicians = await Musician
+//         .find({ isActive: true }) 
+//         .sort({ name: 1 })  
+//         .select({ name: 1, genre: 1 })
+
+//     console.log(musicians)
+// };
+
+// getMusicians();
+
+
+// same as above:
 async function getMusicians() {
-    const pageNumber = 2;
-    const pageSize = 10;
-    // /api/musicians?pageNumber=2&pageSize=10
+    return await Musician
+    .find({ isActive: true }) 
+    .sort('name') // '-name' for descending
+    .select('name genre')
+};
 
-    const musicians = await Musician
-        .find({ bookingPrice: { $in: [7000, 7500, 8000] }}) 
-        .skip((pageNumber-1) * pageSize)
-        .limit(pageSize)
-        .sort({ name: 1 })  
+async function run() {
+    const musicians = await getMusicians();
+    console.log(musicians);
+};
 
-    console.log(musicians)
-} 
-
-getMusicians();
-
+run();

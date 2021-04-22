@@ -1,0 +1,1 @@
+mongoimport --db mongo-musician --collection musicians --drop --file musician-data.json --jsonArray

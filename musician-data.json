@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Nirvana",
+        "genre": "Grunge",
+        "date": "2021-04-22T21:42:27.388Z",
+        "isActive": false,
+        "bookingPrice": 0
+    },
+    {
+        "name": "Dinosaur Jr.",
+        "genre": "Grunge",
+        "date": "2021-04-22T21:42:27.388Z",
+        "isActive": true,
+        "bookingPrice": 15000
+    },
+    {
+        "name": "Pearl Jam",
+        "genre": "Alternative Rock",
+        "date": "2021-04-22T21:42:27.388Z",
+        "isActive": true,
+        "bookingPrice": 25000
+    },
+    {
+        "name": "Sound Garden",
+        "genre": "Alternative Rock",
+        "date": "2021-04-22T21:42:27.388Z",
+        "isActive": false,
+        "bookingPrice": 0
+    },
+    {
+        "name": "Screaming Trees",
+        "genre": "Alternative Rock",
+        "date": "2021-04-22T21:42:27.388Z",
+        "isActive": false,
+        "bookingPrice": 0
+    }
+]
