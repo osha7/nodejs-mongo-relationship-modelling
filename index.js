@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // mongoose.connect('mongodb://localhost/playground', { useNewUrlParser: true, useUnifiedTopology: true }) //connects to MongoDB with connection string
-mongoose.connect('mongodb://localhost/mongo-musician', { useNewUrlParser: true, useUnifiedTopology: true }) //connects to MongoDB with connection string
+mongoose.connect('mongodb://localhost/mongo-musician', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }) //connects to MongoDB with connection string
 // this connection string will change when in production environment and will not be hardcoded, it will come from config file
 // .connect returns promise
     .then(() => console.log('Connected to MongoDB...'))
@@ -133,7 +133,7 @@ const Musician = mongoose.model('Musician', musicianSchema); // Musician is a Cl
 //     console.log(musicians)
 // } 
 
-// exercise:
+// // exercise:
 // async function getMusicians() {
 //     const musicians = await Musician
 //         .find({ isActive: true }) 
@@ -146,17 +146,112 @@ const Musician = mongoose.model('Musician', musicianSchema); // Musician is a Cl
 // getMusicians();
 
 
-// same as above:
-async function getMusicians() {
-    return await Musician
-    .find({ isActive: true }) 
-    .sort('name') // '-name' for descending
-    .select('name genre')
-};
+// // same as above:
+// async function getMusicians() {
+//     return await Musician
+//     .find({ isActive: true }) 
+//     .sort('name') // '-name' for descending
+//     .select('name genre')
+// };
 
-async function run() {
-    const musicians = await getMusicians();
-    console.log(musicians);
-};
+// async function run() {
+//     const musicians = await getMusicians();
+//     console.log(musicians);
+// };
 
-run();
+// run();
+
+// async function getMusicians() {
+//     return await Musician
+//     .find({ isActive: true })
+//     // .find({ isActive: true, tags: { $in: ['Saddest Factory', 'Arrow de Wilde'] } })
+
+//     // .find({ isActive: true })
+//     // .or([ { tags: 'Saddest Factory' }, { tags: 'Arrow de Wilde' } ])
+//     .sort('-bookingPrice')
+//     .select('name bookingPrice isActive')
+// };
+
+// async function run() {
+//     const musicians = await getMusicians();
+//     console.log(musicians);
+// };
+
+// run();
+
+// async function getMusicians() {
+//     return await Musician
+//     .find()
+//     .or([{ bookingPrice: { $gte: 16000  }}, { name: /.*sound.*/i }])
+//     // .find({ isActive: true, tags: { $in: ['Saddest Factory', 'Arrow de Wilde'] } })
+
+//     // .find({ isActive: true })
+//     // .or([ { tags: 'Saddest Factory' }, { tags: 'Arrow de Wilde' } ])
+// };
+
+// async function run() {
+//     const musicians = await getMusicians();
+//     console.log(musicians);
+// };
+
+// run();
+
+
+// // #1: Query First
+    // // receive input from client and make sure update is valid operation
+
+
+// async function updateMusician(id) {
+//     // findById()
+//     const musician = await Musician.findById(id);
+    
+//     if (!musician) return;
+    
+//     // Modify
+//       // musician.isActive = true
+//       // musician.genre = 'Another Genre'
+    
+//     musician.set({ //same as above
+//         isActive: true,
+//         genre: 'Alternative Rock'
+//     });
+    
+//    // Save
+//     const result = await musician.save();
+//     console.log(result);
+// };
+
+// updateMusician('6081f54f59c060e2afe7c7e5'); // <- change id according to your unique id key/value
+
+// // ObjectId("6081f54f59c060e2afe7c7e5") -> unique id of musician
+
+
+
+// // Updating a Doc - #2: Update First
+//     // not receiving input and just want to update directly
+// async function updateMusician(id) {
+// // Update Directly:
+//     // const result = await Musician.updateOne({ _id: id }, { //updateMany
+//     const musician = await Musician.findByIdAndUpdate(id, {
+//         $set: {
+//             isActive: true,
+//             genre: 'Alternative Rock'
+//         }
+//     }, { new: true }); // this argument makes sure the return value is updated doc, otherwise it logs the orginal doc before update
+// // Optionally get updated doc:
+//     console.log(musician);
+// }
+
+// updateMusician('6081f54f59c060e2afe7c7e5');
+
+
+// Deleting Documents:
+async function deleteMusician(id) { // Mosh uses function: removeMusician(id)
+    // const result = await Musician.deleteOne({ _id: id, }); // or: .deleteMany()
+    // console.log(result);
+    const musician = await Musician.findByIdAndRemove(id);
+    // returns 'null' if no musician by given id
+    console.log(musician);
+}
+    
+deleteMusician('6081f54f59c060e2afe7c7e7');
