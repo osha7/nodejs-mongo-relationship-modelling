@@ -21,7 +21,7 @@ let song = {
 
 let musician = {
     name: "Phoebe Bridgers",
-    // a number of other properties
+    // a number of other properties...
 }
 
 let song = {
